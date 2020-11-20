@@ -9,6 +9,9 @@ const {
   GraphQLList,
 } = graphql;
 
+const Director = require('../models/director.model');
+const Movie = require('../models/movie.model');
+
 const MovieType = new GraphQLObjectType({
   name: 'Movie',
   fields: () => ({
@@ -18,7 +21,8 @@ const MovieType = new GraphQLObjectType({
     director: {
       type: DirectorType,
       resolve(parent, args) {
-        // return directors.find(director => director.id === parent.id);
+        console.log('MovieType: ', parent);
+        return Director.findById(parent.directorId);
       },
     },
   }),
@@ -33,7 +37,7 @@ const DirectorType = new GraphQLObjectType({
     movies: {
       type: new GraphQLList(MovieType),
       resolve(parent, args) {
-        // return movies.filter(movie => movie.directorId === parent.id);
+        return Movie.find({ directorId: parent.directorId });
       },
     },
   }),
@@ -46,14 +50,14 @@ const Query = new GraphQLObjectType({
       type: MovieType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        // return movies.find(movie => movie.id === args.id);
+        return Movie.find({ directorId: parent.directorId });
       },
     },
     director: {
       type: DirectorType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        // return directors.find(director => director.id === args.id);
+        return Director.findById(args.id);
       },
     },
     movies: {

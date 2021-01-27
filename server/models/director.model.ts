@@ -1,8 +1,8 @@
-import mongoose, { Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
-const directorSchema: Schema = new Schema({
+const directorSchema = new Schema({
   name: String,
   age: Number,
 });
 
-export const Director = mongoose.model('Directors', directorSchema);
+module.exports = model('Directors', directorSchema);
